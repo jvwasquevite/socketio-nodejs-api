@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'path'
+
 import { createServer } from 'http'
 import { Server, Socket } from 'socket.io'
 
@@ -27,7 +28,7 @@ app.set('view engine', 'html')
  * Creating view route
  */
 app.use('/', (req, res) => {
-  res.render('/index.html')
+  res.render('index.html')
 })
 
 io.on('connection', (socket: Socket) => {
