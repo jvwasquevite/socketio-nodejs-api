@@ -25,14 +25,27 @@ app.engine('html', require('ejs').renderFile)
 app.set('view engine', 'html')
 
 /**
- * Creating view route
+ * Creating route for chat view
  */
+
 app.use('/', (req, res) => {
   res.render('index.html')
 })
 
+/**
+ * Creating wn new socket connection
+ */
+
+let messages = []
+
 io.on('connection', (socket: Socket) => {
-  console.log('Se conectou', socket.id)
+  console.log('Se conectou: ', socket.id)
+  socket.emit('previousMessages', messages)
+
+  socket.on('sendMessage', data => {
+    messages.push(data)
+    socket.broadcast.emit('receivedMessage', data)
+  })
 })
 
 server.listen(3000, () => console.log('Server is running on port 3000'))
